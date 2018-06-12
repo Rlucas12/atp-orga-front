@@ -39,7 +39,7 @@ import { mapGetters } from 'vuex'
 import Sidebar from './Sidebar'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Tournaments',
   created() {
     this.$store.dispatch(
       'getTournaments',
@@ -85,8 +85,8 @@ export default {
   }
   thead {
     background: #ED4264;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #FFEDBC, #ED4264);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #FFEDBC, #ED4264); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: -webkit-linear-gradient(to right, #ED4264, #FFEDBC);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ED4264, #FFEDBC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
   th { color: #FFF!important }

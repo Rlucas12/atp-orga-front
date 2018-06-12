@@ -3,7 +3,7 @@
     <v-list class="pt-0" dense>
       <v-divider></v-divider>
       <img src="./../assets/logo.svg" alt="Tennisify" width="220px"/>
-      <v-list-tile v-for="item in items" :key="item.title" @click="clickEvent" class="sidebarItem">
+      <v-list-tile v-for="item in items" :key="item.title" @click="goTo(item.path)" class="sidebarItem">
         <span class="active-blur" v-if="item.isActive"></span>
         <span class="active" v-if="item.isActive"></span>
         <v-list-tile-action>
@@ -20,7 +20,9 @@
 <script>
   export default {
     methods: {
-      clickEvent () {},
+      goTo: function(path) {
+        this.$router.push(path)
+      }
     },
     props: {
       homeIsActive: Boolean,
@@ -32,10 +34,10 @@
       return {
         drawer: true,
         items: [
-          { title: 'HOME', icon: 'home', isActive: this.homeIsActive },
-          { title: 'TOURNAMENTS', icon: 'dashboard', isActive: this.tournamentsIsActive },
-          { title: 'IMPORT EXCEL', icon: 'cloud_upload', isActive: this.importExcelIsActive },
-          { title: 'SETTING', icon: 'settings', isActive: this.settingsIsActive }
+          { title: 'HOME', icon: 'home', isActive: this.homeIsActive, path: '/home' },
+          { title: 'TOURNAMENTS', icon: 'dashboard', isActive: this.tournamentsIsActive, path: '/tournaments' },
+          { title: 'IMPORT EXCEL', icon: 'cloud_upload', isActive: this.importExcelIsActive, path: '/importExcel' },
+          { title: 'SETTING', icon: 'settings', isActive: this.settingsIsActive, path: '/settings' }
         ],
         right: null
       }
@@ -57,6 +59,7 @@
     background: #ED4264;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #ED4264, #FFEDBC);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #ED4264, #FFEDBC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    transition: all 1s ease-in;
   }
 
   .active-blur {
@@ -68,6 +71,7 @@
     background: #ED4264;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #ED4264, #FFEDBC);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #ED4264, #FFEDBC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    filter: blur(4px)
+    filter: blur(4px);
+    transition: all 1s ease-in;
   }
 </style>

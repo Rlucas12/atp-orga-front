@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../components/Home.vue'
-import TournamentDetail from '../components/TournamentDetail.vue'
 import Login from '../components/Login.vue'
+// import Home from '../components/Home.vue'
+import Tournaments from '../components/Tournaments.vue'
+import ImportExcel from '../components/ImportExcel'
+import TournamentDetail from '../components/TournamentDetail.vue'
 import store from '../store'
 
 Vue.use(Router)
@@ -21,10 +23,34 @@ export default new Router({
         next('/')
       }
     },
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: Home,
+    //   beforeEnter: (to, from, next) => {
+    //     if (store.getters.isAuthenticated) {
+    //       next()
+    //       return
+    //     }
+    //     next('/login')
+    //   }
+    // },
     {
-      path: '/',
-      name: 'home',
-      component: Home,
+      path: '/tournaments',
+      name: 'tournaments',
+      component: Tournaments,
+      beforeEnter: (to, from, next) => {
+        if (store.getters.isAuthenticated) {
+          next()
+          return
+        }
+        next('/login')
+      }
+    },
+    {
+      path: '/importExcel',
+      name: 'importExcel',
+      component: ImportExcel,
       beforeEnter: (to, from, next) => {
         if (store.getters.isAuthenticated) {
           next()
