@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- MENU -->
-    <sidebar></sidebar>
+    <sidebar :tournamentsIsActive="isActive" ></sidebar>
     
     <!-- TOOLBAR -->
     <v-flex xs10 offset-xs2>
@@ -59,6 +59,7 @@ export default {
   },
   data() {
     return {
+      isActive: true,
       headers: [
         { text: 'Details', value: '_id', align: 'center' },
         { text: 'Name', value: 'name', align: 'center' },

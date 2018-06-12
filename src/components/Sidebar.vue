@@ -22,14 +22,20 @@
     methods: {
       clickEvent () {},
     },
+    props: {
+      homeIsActive: Boolean,
+      tournamentsIsActive: Boolean,
+      importExcelIsActive: Boolean,
+      settingsIsActive: Boolean,
+    },
     data () {
       return {
         drawer: true,
         items: [
-          { title: 'HOME', icon: 'home', isActive: false },
-          { title: 'TOURNAMENTS', icon: 'dashboard', isActive: true },
-          { title: 'IMPORT EXCEL', icon: 'dashboard', isActive: false },
-          { title: 'SETTING', icon: 'settings', isActive: false }
+          { title: 'HOME', icon: 'home', isActive: this.homeIsActive },
+          { title: 'TOURNAMENTS', icon: 'dashboard', isActive: this.tournamentsIsActive },
+          { title: 'IMPORT EXCEL', icon: 'cloud_upload', isActive: this.importExcelIsActive },
+          { title: 'SETTING', icon: 'settings', isActive: this.settingsIsActive }
         ],
         right: null
       }
