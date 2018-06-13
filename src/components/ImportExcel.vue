@@ -63,7 +63,7 @@ export default {
     },
     handleFileUpload(fileList){
       this.files.append("csv", fileList[0], fileList[0]);
-      axios.post(`http://192.168.43.253:3000/api/importCSV/${this.tournamentName}`, this.files, {
+      axios.post(`${process.env.API_URL}/importCSV/${this.tournamentName}`, this.files, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

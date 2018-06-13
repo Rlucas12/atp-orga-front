@@ -31,7 +31,7 @@ export default new Vuex.Store({
   actions: {
     login({ commit }, { email, password }) {
       axios
-        .post('http://192.168.43.253:3000/api/users/login', {
+        .post(`${process.env.API_URL}/users/login`, {
           email,
           password
         })
@@ -45,7 +45,7 @@ export default new Vuex.Store({
     },
     getTournaments({ commit }, token) {
       axios
-        .get('http://192.168.43.253:3000/api/tournaments', {
+        .get(`${process.env.API_URL}/tournaments`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
