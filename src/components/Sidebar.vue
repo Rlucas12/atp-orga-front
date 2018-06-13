@@ -59,9 +59,10 @@
     background: #ED4264;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #ED4264, #FFEDBC);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #ED4264, #FFEDBC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    transition: all 1s ease-in;
-  }
+    animation-duration: 0.5s;
+    animation-name: showme;
 
+  }
   .active-blur {
     height: 110%;
     width: 6px;
@@ -72,6 +73,17 @@
     background: -webkit-linear-gradient(to bottom, #ED4264, #FFEDBC);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #ED4264, #FFEDBC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     filter: blur(4px);
-    transition: all 1s ease-in;
+    animation-duration: 0.5s;
+    animation-name: showme;
+  }
+
+  @keyframes showme {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
 </style>
