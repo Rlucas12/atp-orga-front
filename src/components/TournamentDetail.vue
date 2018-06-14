@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="tournament != null">
     <!-- MENU -->
     <sidebar :tournamentsIsActive='isActive'></sidebar>
     
@@ -15,35 +15,48 @@
     </v-flex>
 
     <!-- TOURNAMENTS DETAILS -->
-    <v-flex xs8 offset-xs3>
-      
-      <!-- <div class="post">
-        <div class="loading" v-if="loading">
-          Loading...
-        </div>
-
-        <div v-if="error" class="error">
-          {{ error }}
-        </div>
-
-        <div v-if="tournament" class="content">
-          <div>{{ tournament.name }}</div>
-          <div>{{ tournament.localisation }}</div>
-          <div v-for="match in tournament.matches" v-bind:key="match._id">
-            <div>{{ match }}</div>
-          </div>
-        </div>
-      </div> -->
+    <v-flex xs10 offset-xs2 class="tournamentDetailDiv">
       <h1 class="tournamentName">{{tournament.name}}</h1>
       <div class="tournament-bracket tournament-bracket--rounded">
         <div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
           <h3 class="tournament-bracket__round-title">Eightfinals</h3>
           <ul class="tournament-bracket__list">
-            <li class="tournament-bracket__item" v-for="match in tournament.matches" v-bind:key="match._id">
+            <li class="tournament-bracket__item" v-for="match in tournament.matches.slice(0, 8)" v-bind:key="match._id">
               <div class="tournament-bracket__match" tabindex="0">
                 <table class="tournament-bracket__table">
                   <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-18">{{ match.createdAt }}</time>
+                    <time datetime="">{{ new Date(match.createdAt).toDateString() }}</time>
+                  </caption>
+                  <thead class="sr-only">
+                    <tr>
+                      <th>Country</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>  
+                  <tbody class="tournament-bracket__content">
+                    <tr class="tournament-bracket__team" v-for="player in match.players" v-bind:key="player._id" v-bind:class="{ tournamentBracketTeamWinner: player._id == '5b1e330779ea5b022c54fa03' }">
+                      <td class="tournament-bracket__country">
+                        <abbr class="tournament-bracket__code" title="CountryCode">{{ player.lastname }}</abbr>
+                        <span class="tournament-bracket__flag flag-icon" aria-label="Flag" :class="setCountryCode(player.countryCode)"></span>
+                      </td>
+                      <td class="tournament-bracket__score">
+                        <span class="tournament-bracket__number">{{ false || 0 }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
+          <h3 class="tournament-bracket__round-title">Quarterfinals</h3>
+          <ul class="tournament-bracket__list" v-if='tournament.matches.length > 8'>
+            <li class="tournament-bracket__item" v-for="match in tournament.matches.slice(8, 12)" v-bind:key="match._id">
+              <div class="tournament-bracket__match" tabindex="0">
+                <table class="tournament-bracket__table">
+                  <caption class="tournament-bracket__caption">
+                    <time datetime="">{{ new Date(match.createdAt).toDateString() }}</time>
                   </caption>
                   <thead class="sr-only">
                     <tr>
@@ -66,15 +79,12 @@
               </div>
             </li>
           </ul>
-        </div>
-        <div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
-          <h3 class="tournament-bracket__round-title">Quarterfinals</h3>
-          <ul class="tournament-bracket__list">
-            <li class="tournament-bracket__item">
+          <ul class="tournament-bracket__list" v-else>
+            <li class="tournament-bracket__item" v-for="nomatch in 4" v-bind:key="nomatch">
               <div class="tournament-bracket__match" tabindex="0">
                 <table class="tournament-bracket__table">
                   <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-18">18 February 1998</time>
+                    <time datetime="">Not yet started</time>
                   </caption>
                   <thead class="sr-only">
                     <tr>
@@ -83,130 +93,12 @@
                     </tr>
                   </thead>  
                   <tbody class="tournament-bracket__content">
-                    <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                    <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Canada">CAN</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-ca" aria-label="Flag"></span>
+                        <abbr class="tournament-bracket__code" title="Canada">???</abbr>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">4</span>
-                      </td>
-                    </tr>
-                    <tr class="tournament-bracket__team">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Kazakhstan">KAZ</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-kz" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">1</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </li>
-
-            <li class="tournament-bracket__item">
-              <div class="tournament-bracket__match" tabindex="0">
-                <table class="tournament-bracket__table">
-                  <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-18">18 February 1998</time>
-                  </caption>
-                  <thead class="sr-only">
-                    <tr>
-                      <th>Country</th>
-                      <th>Score</th>
-                    </tr>
-                  </thead>  
-                  <tbody class="tournament-bracket__content">
-                    <tr class="tournament-bracket__team tournament-bracket__team--winner">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Czech Republic">CZE</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-cz" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">4</span>
-                      </td>
-                    </tr>
-                    <tr class="tournament-bracket__team">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Unitede states of America">USA</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-us" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">1</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </li>
-
-            <li class="tournament-bracket__item">
-              <div class="tournament-bracket__match" tabindex="0">
-                <table class="tournament-bracket__table">
-                  <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-18">18 February 1998</time>
-                  </caption>
-                  <thead class="sr-only">
-                    <tr>
-                      <th>Country</th>
-                      <th>Score</th>
-                    </tr>
-                  </thead>  
-                  <tbody class="tournament-bracket__content">
-                    <tr class="tournament-bracket__team tournament-bracket__team--winner">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Finland">FIN</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-fi" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">2</span>
-                      </td>
-                    </tr>
-                    <tr class="tournament-bracket__team">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Sweden">SVE</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-se" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">1</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </li>
-
-            <li class="tournament-bracket__item">
-              <div class="tournament-bracket__match" tabindex="0">
-                <table class="tournament-bracket__table">
-                  <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-18">18 February 1998</time>
-                  </caption>
-                  <thead class="sr-only">
-                    <tr>
-                      <th>Country</th>
-                      <th>Score</th>
-                    </tr>
-                  </thead>  
-                  <tbody class="tournament-bracket__content">
-                    <tr class="tournament-bracket__team tournament-bracket__team--winner">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Russia">RUS</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-ru" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">4</span>
-                      </td>
-                    </tr>
-                    <tr class="tournament-bracket__team">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Belarus">BEL</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-by" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">1</span>
+                        <span class="tournament-bracket__number">?</span>
                       </td>
                     </tr>
                   </tbody>
@@ -217,12 +109,12 @@
         </div>
         <div class="tournament-bracket__round tournament-bracket__round--semifinals">
           <h3 class="tournament-bracket__round-title">Semifinals</h3>
-          <ul class="tournament-bracket__list">
-            <li class="tournament-bracket__item">
+          <ul class="tournament-bracket__list" v-if='tournament.matches.length > 12'>
+            <li class="tournament-bracket__item" v-for="match in tournament.matches.slice(6, 8)" v-bind:key="match._id">
               <div class="tournament-bracket__match" tabindex="0">
                 <table class="tournament-bracket__table">
                   <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-20">20 February 1998</time>
+                    <time datetime="">{{ new Date(match.createdAt).toDateString() }}</time>
                   </caption>
                   <thead class="sr-only">
                     <tr>
@@ -231,34 +123,26 @@
                     </tr>
                   </thead>  
                   <tbody class="tournament-bracket__content">
-                    <tr class="tournament-bracket__team">
+                    <tr class="tournament-bracket__team" v-for="player in match.players" v-bind:key="player._id" v-bind:class="{ tournamentBracketTeamWinner: player._id == '5b1e330779ea5b022c54fa03' }">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Canada">CAN</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-ca" aria-label="Flag"></span>
+                        <abbr class="tournament-bracket__code" title="Canada">{{ player.lastname }}</abbr>
+                        <span class="tournament-bracket__flag flag-icon" aria-label="Flag" :class="setCountryCode(player.countryCode)"></span>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">1</span>
-                      </td>
-                    </tr>
-                    <tr class="tournament-bracket__team tournament-bracket__team--winner">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Czech Republic">CZE</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-cz" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">2</span>
+                        <span class="tournament-bracket__number">4</span>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </li>
-
-            <li class="tournament-bracket__item">
+          </ul>
+          <ul class="tournament-bracket__list" v-else>
+            <li class="tournament-bracket__item" v-for="nomatch in 2" v-bind:key="nomatch">
               <div class="tournament-bracket__match" tabindex="0">
                 <table class="tournament-bracket__table">
                   <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-20">20 February 1998</time>
+                    <time datetime="">Not yet started</time>
                   </caption>
                   <thead class="sr-only">
                     <tr>
@@ -267,22 +151,12 @@
                     </tr>
                   </thead>  
                   <tbody class="tournament-bracket__content">
-                    <tr class="tournament-bracket__team">
+                    <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Finland">FIN</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-fi" aria-label="Flag"></span>
+                        <abbr class="tournament-bracket__code" title="Canada">???</abbr>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">4</span>
-                      </td>
-                    </tr>
-                    <tr class="tournament-bracket__team tournament-bracket__team--winner">
-                      <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Russia">RUS</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-ru" aria-label="Flag"></span>
-                      </td>
-                      <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">7</span>
+                        <span class="tournament-bracket__number">?</span>
                       </td>
                     </tr>
                   </tbody>
@@ -293,12 +167,12 @@
         </div>
         <div class="tournament-bracket__round tournament-bracket__round--bronze">
           <h3 class="tournament-bracket__round-title">Bronze medal game</h3>
-          <ul class="tournament-bracket__list">
-            <li class="tournament-bracket__item">
+          <ul class="tournament-bracket__list" v-if='tournament.matches.length > 14'>
+            <li class="tournament-bracket__item" v-for="match in tournament.matches.slice(6, 7)" v-bind:key="match._id">
               <div class="tournament-bracket__match" tabindex="0">
                 <table class="tournament-bracket__table">
                   <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-21">21 February 1998</time>
+                    <time datetime="">{{ new Date(match.createdAt).toDateString() }}</time>
                   </caption>
                   <thead class="sr-only">
                     <tr>
@@ -307,23 +181,41 @@
                     </tr>
                   </thead>  
                   <tbody class="tournament-bracket__content">
-                    <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                    <tr class="tournament-bracket__team" v-for="player in match.players" v-bind:key="player._id" v-bind:class="{ tournamentBracketTeamWinner: player._id == '5b1e330779ea5b022c54fa03' }">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Finland">FIN</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-fi" aria-label="Flag"></span>
+                        <abbr class="tournament-bracket__code" title="Canada">{{ player.lastname }}</abbr>
+                        <span class="tournament-bracket__flag flag-icon" aria-label="Flag" :class="setCountryCode(player.countryCode)"></span>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">3</span>
-                        <span class="tournament-bracket__medal tournament-bracket__medal--bronze fa fa-trophy" aria-label="Bronze medal"></span>
+                        <span class="tournament-bracket__number">4</span>
+                        <span v-if="player == match.players[match.players.length - 1]" class="tournament-bracket__medal tournament-bracket__medal--bronze fa fa-trophy" aria-label="Bronze medal"></span>
                       </td>
                     </tr>
-                    <tr class="tournament-bracket__team">
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ul>
+          <ul class="tournament-bracket__list" v-else>
+            <li class="tournament-bracket__item">
+              <div class="tournament-bracket__match" tabindex="0">
+                <table class="tournament-bracket__table">
+                  <caption class="tournament-bracket__caption">
+                    <time datetime="">Not yet started</time>
+                  </caption>
+                  <thead class="sr-only">
+                    <tr>
+                      <th>Country</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>  
+                  <tbody class="tournament-bracket__content">
+                    <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Canada">CAN</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-ca" aria-label="Flag"></span>
+                        <abbr class="tournament-bracket__code" title="Canada">???</abbr>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">2</span>
+                        <span class="tournament-bracket__number">?</span>
                       </td>
                     </tr>
                   </tbody>
@@ -334,12 +226,12 @@
         </div>
         <div class="tournament-bracket__round tournament-bracket__round--gold">
           <h3 class="tournament-bracket__round-title">Gold medal game</h3>
-          <ul class="tournament-bracket__list">
-            <li class="tournament-bracket__item">
+          <ul class="tournament-bracket__list" v-if='tournament.matches.length > 15'>
+            <li class="tournament-bracket__item" v-for="match in tournament.matches.slice(6, 7)" v-bind:key="match._id">
               <div class="tournament-bracket__match" tabindex="0">
                 <table class="tournament-bracket__table">
                   <caption class="tournament-bracket__caption">
-                    <time datetime="1998-02-22">22 February 1998</time>
+                    <time datetime="1998-02-18">{{ match.createdAt }}</time>
                   </caption>
                   <thead class="sr-only">
                     <tr>
@@ -348,24 +240,42 @@
                     </tr>
                   </thead>  
                   <tbody class="tournament-bracket__content">
-                    <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                    <tr class="tournament-bracket__team" v-for="player in match.players" v-bind:key="player._id" v-bind:class="{ tournamentBracketTeamWinner: player._id == '5b1e330779ea5b022c54fa03' }">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Czech Republic">CZE</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-cz" aria-label="Flag"></span>
+                        <abbr class="tournament-bracket__code" title="Canada">{{ player.lastname }}</abbr>
+                        <span class="tournament-bracket__flag flag-icon" aria-label="Flag" :class="setCountryCode(player.countryCode)"></span>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">1</span>
-                        <span class="tournament-bracket__medal tournament-bracket__medal--gold fa fa-trophy" aria-label="Gold medal"></span>
+                        <span class="tournament-bracket__number">{{ 1 || 0 }}</span>
+                        <span v-if="player == match.players[0]" class="tournament-bracket__medal tournament-bracket__medal--gold fa fa-trophy" aria-label="Gold medal"></span>
+                        <span v-if="player == match.players[match.players.length - 1]" class="tournament-bracket__medal tournament-bracket__medal--silver fa fa-trophy" aria-label="Silver medal"></span>
                       </td>
                     </tr>
-                    <tr class="tournament-bracket__team">
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ul>
+          <ul class="tournament-bracket__list" v-else>
+            <li class="tournament-bracket__item">
+              <div class="tournament-bracket__match" tabindex="0">
+                <table class="tournament-bracket__table">
+                  <caption class="tournament-bracket__caption">
+                    <time datetime="">Not yet started</time>
+                  </caption>
+                  <thead class="sr-only">
+                    <tr>
+                      <th>Country</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>  
+                  <tbody class="tournament-bracket__content">
+                    <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Russia">RUS</abbr>
-                        <span class="tournament-bracket__flag flag-icon flag-icon-ru" aria-label="Flag"></span>
+                        <abbr class="tournament-bracket__code" title="Canada">???</abbr>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">0</span>
-                        <span class="tournament-bracket__medal tournament-bracket__medal--silver fa fa-trophy" aria-label="Silver medal"></span>
+                        <span class="tournament-bracket__number">?</span>
                       </td>
                     </tr>
                   </tbody>
@@ -428,7 +338,8 @@ export default {
   @import 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/css/flag-icon.min.css';
   @import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css';
   .toolbarIcn { margin-left: 50px }
-  .tournamentName { margin: 80px 0 50px 0 }
+  .tournamentName { margin-bottom: 50px }
+  .tournamentDetailDiv { padding: 50px }
   @media (min-width: 38em) {
     html {
       font-size: 14px;
