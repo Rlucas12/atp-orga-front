@@ -20,7 +20,7 @@
       <div class="tournament-bracket tournament-bracket--rounded">
         <div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
           <h3 class="tournament-bracket__round-title">Eightfinals</h3>
-          <ul class="tournament-bracket__list">
+          <ul class="tournament-bracket__list" v-if='tournament.matches.length > 0'>
             <li class="tournament-bracket__item" v-for="match in tournament.matches.slice(0, 8)" v-bind:key="match._id">
               <div class="tournament-bracket__match" tabindex="0">
                 <table class="tournament-bracket__table">
@@ -40,7 +40,34 @@
                         <span class="tournament-bracket__flag flag-icon" aria-label="Flag" :class="setCountryCode(player.countryCode)"></span>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">{{ false || 0 }}</span>
+                        <span class="tournament-bracket__number">{{ match.sets.filter(currentSet => currentSet.winner === player._id).length || 0 }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ul>
+          <ul class="tournament-bracket__list" v-else>
+            <li class="tournament-bracket__item" v-for="nomatch in 4" v-bind:key="nomatch">
+              <div class="tournament-bracket__match" tabindex="0">
+                <table class="tournament-bracket__table">
+                  <caption class="tournament-bracket__caption">
+                    <time datetime="">Not yet started</time>
+                  </caption>
+                  <thead class="sr-only">
+                    <tr>
+                      <th>Country</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>  
+                  <tbody class="tournament-bracket__content">
+                    <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
+                      <td class="tournament-bracket__country">
+                        <abbr class="tournament-bracket__code" title="Canada">N/A</abbr>
+                      </td>
+                      <td class="tournament-bracket__score">
+                        <span class="tournament-bracket__number">N/A</span>
                       </td>
                     </tr>
                   </tbody>
@@ -95,10 +122,10 @@
                   <tbody class="tournament-bracket__content">
                     <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Canada">???</abbr>
+                        <abbr class="tournament-bracket__code" title="Canada">N/A</abbr>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">?</span>
+                        <span class="tournament-bracket__number">N/A</span>
                       </td>
                     </tr>
                   </tbody>
@@ -153,10 +180,10 @@
                   <tbody class="tournament-bracket__content">
                     <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Canada">???</abbr>
+                        <abbr class="tournament-bracket__code" title="Canada">N/A</abbr>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">?</span>
+                        <span class="tournament-bracket__number">N/A</span>
                       </td>
                     </tr>
                   </tbody>
@@ -212,10 +239,10 @@
                   <tbody class="tournament-bracket__content">
                     <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Canada">???</abbr>
+                        <abbr class="tournament-bracket__code" title="Canada">N/A</abbr>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">?</span>
+                        <span class="tournament-bracket__number">N/A</span>
                       </td>
                     </tr>
                   </tbody>
@@ -272,10 +299,10 @@
                   <tbody class="tournament-bracket__content">
                     <tr class="tournament-bracket__team" v-for='noplayer in 2' v-bind:key="noplayer">
                       <td class="tournament-bracket__country">
-                        <abbr class="tournament-bracket__code" title="Canada">???</abbr>
+                        <abbr class="tournament-bracket__code" title="Canada">N/A</abbr>
                       </td>
                       <td class="tournament-bracket__score">
-                        <span class="tournament-bracket__number">?</span>
+                        <span class="tournament-bracket__number">N/A</span>
                       </td>
                     </tr>
                   </tbody>
