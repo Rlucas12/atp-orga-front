@@ -25,7 +25,7 @@
           <td class="text-xs-center"><v-btn color="primary" v-on:click="goToDetails(props.item._id)">Go to details</v-btn></td>
           <td class="text-xs-center">{{ props.item.name }}</td>
           <td class="text-xs-center">{{ props.item.description }}</td>
-          <td class="text-xs-center">{{ props.item.image }}</td>
+          <td class="text-xs-center"><img :src=" apiUrlImage + props.item.image" height="35"/></td>
           <td class="text-xs-center">{{ props.item.localisation }}</td>
           <td class="text-xs-center">{{ props.item.matches.length }}</td>
         </template>
@@ -40,6 +40,9 @@ import Sidebar from './Sidebar'
 
 export default {
   name: 'Tournaments',
+  mounted() {
+    this.apiUrlImage = process.env.API_URL_IMAGE
+  },
   created() {
     this.$store.dispatch(
       'getTournaments',
@@ -60,6 +63,7 @@ export default {
   data() {
     return {
       isActive: true,
+      apiUrlImage: String,
       headers: [
         { text: 'Details', value: '_id', align: 'center' },
         { text: 'Name', value: 'name', align: 'center' },
