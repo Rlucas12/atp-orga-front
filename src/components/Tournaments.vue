@@ -22,12 +22,12 @@
         :items="tournaments"
       >
         <template slot="items" slot-scope="props">
-          <td><v-btn color="primary" v-on:click="goToDetails(props.item._id)">Go to details</v-btn></td>
-          <td>{{ props.item.name }}</td>
-          <td>{{ props.item.description }}</td>
-          <td>{{ props.item.image }}</td>
-          <td>{{ props.item.localisation }}</td>
-          <td>{{ props.item.matches.length }}</td>
+          <td class="text-xs-center"><v-btn color="primary" v-on:click="goToDetails(props.item._id)">Go to details</v-btn></td>
+          <td class="text-xs-center">{{ props.item.name }}</td>
+          <td class="text-xs-center">{{ props.item.description }}</td>
+          <td class="text-xs-center">{{ props.item.image }}</td>
+          <td class="text-xs-center">{{ props.item.localisation }}</td>
+          <td class="text-xs-center">{{ props.item.matches.length }}</td>
         </template>
       </v-data-table>
     </v-flex>

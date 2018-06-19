@@ -22,8 +22,9 @@
         :items="players"
       >
         <template slot="items" slot-scope="props">
-          <td>{{ props.item.firstname }}</td>
-          <td>{{ props.item.lastname }}</td>
+          <td class="text-xs-center"><img :src=" apiUrlImage + props.item.image" height="50"/></td>
+          <td class="text-xs-center">{{ props.item.firstname }}</td>
+          <td class="text-xs-center">{{ props.item.lastname }}</td>
         </template>
       </v-data-table>
     </v-flex>
@@ -36,6 +37,10 @@ import Sidebar from './Sidebar'
 
 export default {
   name: 'Players',
+  mounted() {
+    console.log(process.env.API_URL_IMAGE)
+    this.apiUrlImage = process.env.API_URL_IMAGE
+  },
   created() {
     this.$store.dispatch(
       'getPlayers',
@@ -51,11 +56,12 @@ export default {
   data() {
     return {
       isActive: true,
+      apiUrlImage: String,
       headers: [
         // { text: 'Details', value: '_id', align: 'center' },
+        { text: 'Image', value: 'image', align: 'center' },
         { text: 'Firstname', value: 'name', align: 'center' },
         { text: 'Lastname', value: 'description', align: 'center' },
-        // { text: 'Image', value: 'image', align: 'center' },
         // { text: 'Localisation', value: 'localisation', align: 'center' },
         // { text: 'Match count', value: 'matches', align: 'center' },
       ]
