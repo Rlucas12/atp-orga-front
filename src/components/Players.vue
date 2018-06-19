@@ -38,7 +38,6 @@ import Sidebar from './Sidebar'
 export default {
   name: 'Players',
   mounted() {
-    console.log(process.env.API_URL_IMAGE)
     this.apiUrlImage = process.env.API_URL_IMAGE
   },
   created() {
