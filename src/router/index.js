@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login.vue'
-// import Home from '../components/Home.vue'
 import Tournaments from '../components/Tournaments.vue'
+import Players from '../components/Players.vue'
 import ImportExcel from '../components/ImportExcel'
 import TournamentDetail from '../components/TournamentDetail.vue'
 import store from '../store'
@@ -23,22 +23,22 @@ export default new Router({
         next('/')
       }
     },
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   component: Home,
-    //   beforeEnter: (to, from, next) => {
-    //     if (store.getters.isAuthenticated) {
-    //       next()
-    //       return
-    //     }
-    //     next('/login')
-    //   }
-    // },
     {
-      path: '/tournaments',
+      path: '/',
       name: 'tournaments',
       component: Tournaments,
+      beforeEnter: (to, from, next) => {
+        if (store.getters.isAuthenticated) {
+          next()
+          return
+        }
+        next('/login')
+      }
+    },
+    {
+      path: '/players',
+      name: 'players',
+      component: Players,
       beforeEnter: (to, from, next) => {
         if (store.getters.isAuthenticated) {
           next()

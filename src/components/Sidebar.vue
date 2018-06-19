@@ -27,6 +27,7 @@
     props: {
       homeIsActive: Boolean,
       tournamentsIsActive: Boolean,
+      playersIsActive: Boolean,
       importExcelIsActive: Boolean,
       settingsIsActive: Boolean,
     },
@@ -34,8 +35,8 @@
       return {
         drawer: true,
         items: [
-          { title: 'HOME', icon: 'home', isActive: this.homeIsActive, path: '/home' },
-          { title: 'TOURNAMENTS', icon: 'dashboard', isActive: this.tournamentsIsActive, path: '/tournaments' },
+          { title: 'TOURNAMENTS', icon: 'home', isActive: this.tournamentsIsActive, path: '/' },
+          { title: 'PLAYERS', icon: 'dashboard', isActive: this.playersIsActive, path: '/players' },
           { title: 'IMPORT EXCEL', icon: 'cloud_upload', isActive: this.importExcelIsActive, path: '/importExcel' },
           { title: 'SETTING', icon: 'settings', isActive: this.settingsIsActive, path: '/settings' }
         ],

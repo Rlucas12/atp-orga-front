@@ -7,11 +7,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     tournaments: [],
+    players: [],
     user: undefined,
     isAuthenticated: !!window.localStorage.getItem('tokentennis')
   },
   getters: {
     tournaments: state => state.tournaments,
+    players: state => state.players,
     user: state => state.user,
     isAuthenticated: state => !!state.isAuthenticated
   },
@@ -26,6 +28,9 @@ export default new Vuex.Store({
     },
     tournaments_success(state, tournaments) {
       state.tournaments = tournaments
+    },
+    players_success(state, players) {
+      state.players = players
     }
   },
   actions: {
@@ -51,6 +56,15 @@ export default new Vuex.Store({
           }
         })
         .then(({ data }) => commit('tournaments_success', data))
+    },
+    getPlayers({ commit }, token) {
+      axios
+        .get(`${process.env.API_URL}/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(({ data }) => commit('players_success', data))
     }
   }
 })
